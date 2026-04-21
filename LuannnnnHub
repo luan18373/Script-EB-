@@ -1,0 +1,237 @@
+--[[
+    EB DELTA - LUAN MASTER SUPREME FINAL
+    - Integração Total: V18 + V59 + Hitbox Parkour Adaptativo
+    - Patentes Completas, Instruções BPE e Rec Mec Restauradas.
+    - Sistema de Hitbox com Smart Walls.
+    - Login: "Luan script"
+]]
+
+local UIS = game:GetService("UserInputService")
+local Players = game:GetService("Players")
+local CoreGui = game:GetService("CoreGui")
+local LocalPlayer = Players.LocalPlayer
+
+-- ANTI-DUPLICATA
+if CoreGui:FindFirstChild("LuanSupreme_Final_v2") then
+    CoreGui.LuanSupreme_Final_v2:Destroy()
+end
+
+local sg = Instance.new("ScreenGui", CoreGui)
+sg.Name = "LuanSupreme_Final_v2"
+sg.ResetOnSpawn = false
+
+local Tema = {
+    Fundo = Color3.fromRGB(15, 15, 15),
+    Borda = Color3.fromRGB(255, 0, 0),
+    Texto = Color3.fromRGB(255, 255, 255),
+    Destaque = Color3.fromRGB(200, 0, 0),
+    Botao = Color3.fromRGB(30, 30, 30),
+    Pergunta = Color3.fromRGB(255, 255, 0),
+    Resposta = Color3.fromRGB(0, 255, 0),
+    OFF = Color3.fromRGB(40, 40, 40),
+    ON = Color3.fromRGB(200, 0, 0)
+}
+
+local sContent = Players:GetUserThumbnailAsync(LocalPlayer.UserId, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size150x150)
+local backupSizes = {}
+
+-- [ COORDENADAS HITBOX PARKOUR ]
+local Tabelas = {
+    [1] = {Vector3.new(-393, 3, 264), Vector3.new(-393, 6, 272), Vector3.new(-393, 8, 279), Vector3.new(-393, 10, 287), Vector3.new(-393, 10, 295), Vector3.new(-395, 10, 302), Vector3.new(-396, 10, 310), Vector3.new(-395, 10, 334), Vector3.new(-404, 10, 356), Vector3.new(-409, 10, 363), Vector3.new(-420, 10, 363), Vector3.new(-420, 10, 354), Vector3.new(-429, 10, 354), Vector3.new(-430, 10, 365), Vector3.new(-438, 10, 354), Vector3.new(-440, 10, 364), Vector3.new(-448, 10, 353), Vector3.new(-451, 10, 335), Vector3.new(-455, 2, 316), Vector3.new(-447, 2, 304), Vector3.new(-451, 2, 292), Vector3.new(-446, 2, 282)},
+    [2] = {Vector3.new(-508, 3, 285), Vector3.new(-513, 3, 288), Vector3.new(-519, 3, 288), Vector3.new(-533, 3, 288), Vector3.new(-533, 4, 297), Vector3.new(-523, 4, 297), Vector3.new(-521, 3, 295), Vector3.new(-513, 6, 306), Vector3.new(-523, 6, 306), Vector3.new(-533, 6, 306), Vector3.new(-533, 4, 315), Vector3.new(-523, 4, 315), Vector3.new(-513, 4, 315), Vector3.new(-513, 3, 324), Vector3.new(-523, 3, 324), Vector3.new(-533, 3, 324), Vector3.new(-525, 11, 339), Vector3.new(-546, 22, 358)},
+    [3] = {Vector3.new(-18953, 2, 8340), Vector3.new(-18963, 6, 8340), Vector3.new(-18969, 6, 8340), Vector3.new(-18980, 6, 8339), Vector3.new(-18988, 6, 8338), Vector3.new(-18995, 6, 8335), Vector3.new(-19002, 6, 8331), Vector3.new(-19010, 6, 8327), Vector3.new(-19016, 6, 8334), Vector3.new(-19024, 6, 8334), Vector3.new(-19031, 6, 8334), Vector3.new(-19048, 10, 8334), Vector3.new(-19065, 8, 8334), Vector3.new(-19083, 6, 8334), Vector3.new(-19101, 10, 8334), Vector3.new(-19137, 9, 8334), Vector3.new(-19165, 6, 8333), Vector3.new(-19173, 6, 8327), Vector3.new(-19173, 6, 8316), Vector3.new(-19173, 6, 8304), Vector3.new(-19166, 6, 8294), Vector3.new(-19157, 6, 8283), Vector3.new(-19152, 6, 8280), Vector3.new(-19148, 3, 8277), Vector3.new(-19144, 2, 8275), Vector3.new(-19131, 6, 8269), Vector3.new(-19117, 6, 8269), Vector3.new(-19082, 6, 8269), Vector3.new(-19047, 6, 8269), Vector3.new(-19041, 4, 8269), Vector3.new(-19035, 2, 8269), Vector3.new(-18969, 6, 8270), Vector3.new(-18963, 6, 8270), Vector3.new(-18958, 3, 8270), Vector3.new(-18953, 2, 8270)},
+    [4] = {Vector3.new(-18960, 4, 8500), Vector3.new(-18968, 9, 8500), Vector3.new(-18975, 11, 8500), Vector3.new(-18983, 15, 8499), Vector3.new(-18990, 18, 8499), Vector3.new(-18995, 21, 8500), Vector3.new(-19005, 24, 8500), Vector3.new(-19013, 16, 8499), Vector3.new(-19022, 22, 8499), Vector3.new(-19032, 18, 8499), Vector3.new(-19050, 21, 8499), Vector3.new(-19067, 21, 8500), Vector3.new(-19076, 22, 8505), Vector3.new(-19080, 22, 8495), Vector3.new(-19085, 22, 8505), Vector3.new(-19092, 22, 8495)},
+    [5] = {Vector3.new(-19084, 8, 0), Vector3.new(-19078, 1, 0), Vector3.new(-19083, 5, 0), Vector3.new(-19085, 87, 0), Vector3.new(-19085, 80, 0), Vector3.new(-19085, 70, 0), Vector3.new(-19085, 60, 0), Vector3.new(-19085, 50, 0), Vector3.new(-19085, 40, 0), Vector3.new(-19085, 30, 0), Vector3.new(-19085, 20, 0), Vector3.new(-19085, 10, 0)},
+    [6] = {Vector3.new(-19281, 86, 7945), Vector3.new(-19300, 86, 7902), Vector3.new(-19313, 90, 7902), Vector3.new(-19315, 86, 7902), Vector3.new(-19329, 86, 7902), Vector3.new(-19327, 90, 7902), Vector3.new(-19339, 90, 7902), Vector3.new(-19341, 86, 7902), Vector3.new(-19358, 83, 8031), Vector3.new(-19358, 52, 8043), Vector3.new(-19358, 40, 8054), Vector3.new(-19358, 29, 8064), Vector3.new(-19358, 21, 8072), Vector3.new(-19358, 19, 8072), Vector3.new(-19358, 13, 8081), Vector3.new(-19358, 2, 8090), Vector3.new(-19320, 3, 7995)}
+}
+
+-- [ FUNÇÕES CORE ]
+local function MudarPatente(novaPatente, cor)
+    local char = LocalPlayer.Character
+    if char then
+        local head = char:FindFirstChild("Head")
+        local billboard = head and head:FindFirstChildOfClass("BillboardGui") or char:FindFirstChildOfClass("BillboardGui")
+        if billboard then
+            local labels = {}
+            for _, v in pairs(billboard:GetDescendants()) do if v:IsA("TextLabel") then table.insert(labels, v) end end
+            table.sort(labels, function(a, b) return a.AbsolutePosition.Y < b.AbsolutePosition.Y end)
+            if #labels >= 2 then
+                labels[1].TextColor3 = cor
+                labels[2].Text = novaPatente
+                labels[2].TextColor3 = cor
+                if labels[3] then labels[3].TextColor3 = cor end
+            end
+        end
+    end
+end
+
+local function DarDinheiro(valor)
+    local stats = LocalPlayer:FindFirstChild("leaderstats")
+    if stats then
+        local cash = stats:FindFirstChild("Money") or stats:FindFirstChild("Dinheiro") or stats:FindFirstChild("Cash")
+        if cash then cash.Value = cash.Value + valor end
+    end
+end
+
+local function EnviarNoChat(txt)
+    local formatado = txt:sub(1,1):upper() .. txt:sub(2):lower()
+    local chatEvent = game:GetService("ReplicatedStorage"):FindFirstChild("DefaultChatSystemChatEvents")
+    if chatEvent and chatEvent:FindFirstChild("SayMessageRequest") then
+        chatEvent.SayMessageRequest:FireServer(formatado, "All")
+    else
+        game:GetService("TextChatService").TextChannels.RBXGeneral:SendAsync(formatado)
+    end
+end
+
+local function AtivarHB(num)
+    local pontos = Tabelas[num]
+    local char = LocalPlayer.Character
+    for _, obj in pairs(workspace:GetDescendants()) do
+        if obj:IsA("BasePart") and (not char or not obj:IsDescendantOf(char)) then
+            for _, pos in pairs(pontos) do
+                if (obj.Position - pos).Magnitude < 20 then
+                    if not backupSizes[obj] then
+                        backupSizes[obj] = obj.Size
+                        if obj.Size.Y > obj.Size.X * 1.5 then
+                            obj.Size = obj.Size + Vector3.new(0.5, 0, 0.5)
+                        else
+                            local inc = (num == 4) and 2.5 or 4
+                            obj.Size = obj.Size + Vector3.new(inc, 0, inc)
+                        end
+                    end
+                end
+            end
+        end
+    end
+end
+
+local function DesativarHB(num)
+    local pontos = Tabelas[num]
+    for obj, s in pairs(backupSizes) do
+        if obj and obj.Parent then
+            for _, pos in pairs(pontos) do
+                if (obj.Position - pos).Magnitude < 21 then
+                    obj.Size = s
+                    backupSizes[obj] = nil
+                end
+            end
+        end
+    end
+end
+
+local function MakeDraggable(gui)
+    local dragging, dragInput, dragStart, startPos
+    gui.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+            dragging = true; dragStart = input.Position; startPos = gui.Position
+            input.Changed:Connect(function() if input.UserInputState == Enum.UserInputState.End then dragging = false end end)
+        end
+    end)
+    UIS.InputChanged:Connect(function(input)
+        if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+            local delta = input.Position - dragStart
+            gui.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+        end
+    end)
+end
+
+-- [ INTERFACE PRINCIPAL ]
+local Main = Instance.new("Frame", sg)
+Main.Size = UDim2.new(0, 520, 0, 450); Main.Position = UDim2.new(0.5, -260, 0.5, -225); Main.BackgroundColor3 = Tema.Fundo; Main.Visible = false
+Instance.new("UIStroke", Main).Color = Tema.Borda; Instance.new("UICorner", Main)
+MakeDraggable(Main)
+
+local Header = Instance.new("Frame", Main); Header.Size = UDim2.new(1, 0, 0, 50); Header.BackgroundTransparency = 1
+local MImg = Instance.new("ImageLabel", Header); MImg.Size = UDim2.new(0, 40, 0, 40); MImg.Position = UDim2.new(0, 10, 0, 5); MImg.Image = sContent; MImg.BackgroundTransparency = 1; Instance.new("UICorner", MImg).CornerRadius = UDim.new(1, 0)
+local MUser = Instance.new("TextLabel", Header); MUser.Size = UDim2.new(0, 300, 0, 20); MUser.Position = UDim2.new(0, 60, 0, 15); MUser.Text = "LUAN SUPREME V18+V59 | " .. LocalPlayer.Name; MUser.TextColor3 = Tema.Texto; MUser.Font = Enum.Font.GothamBold; MUser.TextXAlignment = Enum.TextXAlignment.Left; MUser.BackgroundTransparency = 1
+
+local Sidebar = Instance.new("Frame", Main); Sidebar.Size = UDim2.new(0, 140, 1, -80); Sidebar.Position = UDim2.new(0, 10, 0, 55); Sidebar.BackgroundColor3 = Color3.fromRGB(10, 10, 10); Instance.new("UICorner", Sidebar)
+local Container = Instance.new("Frame", Main); Container.Size = UDim2.new(1, -170, 1, -80); Container.Position = UDim2.new(0, 160, 0, 55); Container.BackgroundTransparency = 1
+
+local Abas = {}
+local function CriarAba(nome)
+    local b = Instance.new("TextButton", Sidebar); b.Size = UDim2.new(0.9, 0, 0, 30); b.Position = UDim2.new(0.05, 0, 0, (#Abas * 35) + 5); b.Text = nome; b.BackgroundColor3 = Tema.Botao; b.TextColor3 = Tema.Texto; b.Font = Enum.Font.GothamBold; b.TextSize = 10; Instance.new("UICorner", b)
+    local f = Instance.new("ScrollingFrame", Container); f.Size = UDim2.new(1, 0, 1, 0); f.Visible = false; f.BackgroundTransparency = 1; f.ScrollBarThickness = 2; Instance.new("UIListLayout", f).Padding = UDim.new(0, 5)
+    local list = f:FindFirstChildOfClass("UIListLayout")
+    list:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function() f.CanvasSize = UDim2.new(0,0,0,list.AbsoluteContentSize.Y + 10) end)
+    b.MouseButton1Click:Connect(function() for _, v in pairs(Abas) do v.f.Visible = false; v.b.BackgroundColor3 = Tema.Botao end; f.Visible = true; b.BackgroundColor3 = Tema.Destaque end)
+    table.insert(Abas, {b = b, f = f})
+    return f
+end
+
+-- CRIANDO AS ABAS
+local fGram = CriarAba("Gramática")
+local fPat = CriarAba("Patentes")
+local fPark = CriarAba("Hitbox Parkour")
+local fBpe = CriarAba("Instrução BPE")
+local fMec = CriarAba("Instrução Rec Mec")
+local fMon = CriarAba("Dinheiro")
+
+local function AddQuest(aba, perg, resp)
+    local bP = Instance.new("TextButton", aba); bP.Size = UDim2.new(1, -10, 0, 30); bP.Text = "P: " .. perg; bP.BackgroundColor3 = Tema.Botao; bP.TextColor3 = Tema.Pergunta; bP.TextSize = 10; bP.TextWrapped = true; bP.Font = Enum.Font.GothamBold; Instance.new("UICorner", bP)
+    bP.MouseButton1Click:Connect(function() EnviarNoChat(perg) end)
+    local bR = Instance.new("TextButton", aba); bR.Size = UDim2.new(1, -10, 0, 30); bR.Text = "R: " .. resp; bR.BackgroundColor3 = Tema.Botao; bR.TextColor3 = Tema.Resposta; bR.TextSize = 10; bR.TextWrapped = true; bR.Font = Enum.Font.Gotham; Instance.new("UICorner", bR)
+    bR.MouseButton1Click:Connect(function() EnviarNoChat(resp) end)
+end
+
+-- [ CONTEÚDO ABAS ]
+-- GRAMÁTICA
+local GInput = Instance.new("TextBox", fGram); GInput.Size = UDim2.new(1, -10, 0, 100); GInput.PlaceholderText = "Digite aqui..."; GInput.BackgroundColor3 = Tema.Botao; GInput.TextColor3 = Tema.Texto; GInput.TextWrapped = true; Instance.new("UICorner", GInput)
+local GBtn = Instance.new("TextButton", fGram); GBtn.Size = UDim2.new(1, -10, 0, 40); GBtn.Text = "ENVIAR AO CHAT"; GBtn.BackgroundColor3 = Tema.Destaque; GBtn.TextColor3 = Tema.Texto; GBtn.Font = Enum.Font.GothamBold; Instance.new("UICorner", GBtn)
+GBtn.MouseButton1Click:Connect(function() EnviarNoChat(GInput.Text); GInput.Text = "" end)
+
+-- PATENTES
+local cVDE, cVCL, cRX, cPT, cVM, cAM, cLR = Color3.fromRGB(0, 100, 0), Color3.fromRGB(0, 255, 0), Color3.fromRGB(128, 0, 128), Color3.fromRGB(0, 0, 0), Color3.fromRGB(255, 0, 0), Color3.fromRGB(255, 255, 0), Color3.fromRGB(255, 128, 0)
+local PatList = {
+    {"[Rec] Recruta", cVDE}, {"[Sd] Soldado", cVDE}, {"[Cb] Cabo", cVDE},
+    {"[3º Sgt] Terceiro sargento", cVCL}, {"[2º Sgt] Segundo sargento", cVCL}, {"[1º Sgt] Primeiro sargento", cVCL}, {"[St] Subtenente", cVCL},
+    {"[Asp] Aspirante a oficial", cRX}, {"[2º Ten] Segundo tenente", cRX}, {"[1º Ten] Primeiro tenente", cRX},
+    {"[Cap] Capitão", cAM}, {"[Maj] Major", cVM}, {"[Tc] Tenente-coronel", cVM}, {"[Cel] Coronel", cPT}, {"[Gen] General", cLR}
+}
+for _, p in pairs(PatList) do
+    local b = Instance.new("TextButton", fPat); b.Size = UDim2.new(1, -10, 0, 30); b.Text = p[1]; b.TextColor3 = p[2]; b.BackgroundColor3 = Tema.Botao; b.Font = Enum.Font.GothamBold; Instance.new("UICorner", b)
+    b.MouseButton1Click:Connect(function() MudarPatente(p[1], p[2]) end)
+end
+
+-- INSTRUÇÕES BPE
+AddQuest(fBpe, "Quem é o Dono, Comandante e Sub da BPE?", "Dono: cezarffpp, Comandante: teusvk7, Sub: BELLINGHAM5454")
+AddQuest(fBpe, "Qual o Hino da BPE?", "Orientar o Responsável, Corrigir o Irresponsável e Prender o Incorrigível!")
+AddQuest(fBpe, "O que significa a sigla BPE?", "Batalhão de Polícia do Exército")
+
+-- INSTRUÇÕES REC MEC
+AddQuest(fMec, "Quem é o Comandante e Sub da REC MEC?", "Comandante: Arthurirobodiamante, Sub: luilherme")
+AddQuest(fMec, "Qual o Hino da REC MEC?", "Haverá sempre uma Cavalaria!")
+AddQuest(fMec, "Qual a função da REC MEC?", "Reconhecimento Mecanizado e apoio blindado")
+
+-- DINHEIRO
+local Valores = {{"10K", 10000}, {"100K", 100000}, {"1M", 1000000}, {"10M", 10000000}, {"100M", 100000000}}
+for _, v in pairs(Valores) do
+    local b = Instance.new("TextButton", fMon); b.Size = UDim2.new(1, -10, 0, 30); b.Text = "ADICIONAR " .. v[1]; b.BackgroundColor3 = Tema.Botao; b.TextColor3 = Color3.fromRGB(0, 255, 0); b.Font = Enum.Font.GothamBold; Instance.new("UICorner", b)
+    b.MouseButton1Click:Connect(function() DarDinheiro(v[2]) end)
+end
+
+-- PARKOUR (HITBOX V59)
+local EstPark = {false, false, false, false, false, false}
+for i = 1, 6 do
+    local b = Instance.new("TextButton", fPark); b.Size = UDim2.new(1, -10, 0, 40); b.Text = "PARKOUR " .. i; b.BackgroundColor3 = Tema.OFF; b.TextColor3 = Tema.Texto; b.Font = Enum.Font.GothamBold; Instance.new("UICorner", b)
+    b.MouseButton1Click:Connect(function()
+        EstPark[i] = not EstPark[i]
+        if EstPark[i] then b.BackgroundColor3 = Tema.ON; AtivarHB(i) else b.BackgroundColor3 = Tema.OFF; DesativarHB(i) end
+    end)
+end
+
+-- LOGIN
+local LoginFrame = Instance.new("Frame", sg); LoginFrame.Size = UDim2.new(0, 300, 0, 250); LoginFrame.Position = UDim2.new(0.5, -150, 0.5, -125); LoginFrame.BackgroundColor3 = Tema.Fundo; Instance.new("UIStroke", LoginFrame).Color = Tema.Borda; Instance.new("UICorner", LoginFrame); MakeDraggable(LoginFrame)
+local LImg = Instance.new("ImageLabel", LoginFrame); LImg.Size = UDim2.new(0, 80, 0, 80); LImg.Position = UDim2.new(0.5, -40, 0, 15); LImg.Image = sContent; LImg.BackgroundTransparency = 1; Instance.new("UICorner", LImg).CornerRadius = UDim.new(1, 0)
+local PassInput = Instance.new("TextBox", LoginFrame); PassInput.Size = UDim2.new(0.8, 0, 0, 35); PassInput.Position = UDim2.new(0.1, 0, 0, 140); PassInput.PlaceholderText = "Senha..."; PassInput.BackgroundColor3 = Tema.Botao; PassInput.TextColor3 = Tema.Texto; Instance.new("UICorner", PassInput)
+local LoginBtn = Instance.new("TextButton", LoginFrame); LoginBtn.Size = UDim2.new(0.6, 0, 0, 35); LoginBtn.Position = UDim2.new(0.2, 0, 0, 190); LoginBtn.Text = "LOGAR"; LoginBtn.BackgroundColor3 = Tema.Destaque; LoginBtn.TextColor3 = Tema.Texto; Instance.new("UICorner", LoginBtn)
+
+LoginBtn.MouseButton1Click:Connect(function()
+    if PassInput.Text == "Luan script" then LoginFrame:Destroy(); Main.Visible = true; Abas[1].f.Visible = true; Abas[1].b.BackgroundColor3 = Tema.Destaque
+    else PassInput.PlaceholderText = "ERRO"; PassInput.Text = "" end
+end)
+
+local Ball = Instance.new("ImageButton", sg); Ball.Size = UDim2.new(0, 50, 0, 50); Ball.Position = UDim2.new(0, 10, 0.5, 0); Ball.Image = sContent; Ball.Visible = false; Ball.BackgroundColor3 = Tema.Fundo; Instance.new("UICorner", Ball).CornerRadius = UDim.new(1, 0); MakeDraggable(Ball); Instance.new("UIStroke", Ball).Color = Tema.Borda
+local Close = Instance.new("TextButton", Main); Close.Size = UDim2.new(0, 30, 0, 30); Close.Position = UDim2.new(1, -35, 0, 5); Close.Text = "X"; Close.BackgroundColor3 = Tema.Destaque; Close.TextColor3 = Tema.Texto; Instance.new("UICorner", Close)
+Close.MouseButton1Click:Connect(function() Main.Visible = false; Ball.Visible = true end)
+Ball.MouseButton1Click:Connect(function() Main.Visible = true; Ball.Visible = false end)
